@@ -5,7 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.slidertypes.BaseSliderView;
 
 import java.util.ArrayList;
 

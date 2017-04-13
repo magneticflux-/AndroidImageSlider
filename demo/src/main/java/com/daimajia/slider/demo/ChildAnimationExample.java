@@ -4,7 +4,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.daimajia.androidanimations.library.attention.StandUpAnimator;
-import com.daimajia.slider.library.Animations.BaseAnimationInterface;
+import com.daimajia.slider.library.animations.BaseAnimationInterface;
 
 public class ChildAnimationExample implements BaseAnimationInterface {
 

@@ -11,38 +11,38 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.RelativeLayout;
 
-import com.daimajia.slider.library.Animations.BaseAnimationInterface;
-import com.daimajia.slider.library.Indicators.PagerIndicator;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.Transformers.AccordionTransformer;
-import com.daimajia.slider.library.Transformers.BackgroundToForegroundTransformer;
-import com.daimajia.slider.library.Transformers.BaseTransformer;
-import com.daimajia.slider.library.Transformers.CubeInTransformer;
-import com.daimajia.slider.library.Transformers.DefaultTransformer;
-import com.daimajia.slider.library.Transformers.DepthPageTransformer;
-import com.daimajia.slider.library.Transformers.FadeTransformer;
-import com.daimajia.slider.library.Transformers.FlipHorizontalTransformer;
-import com.daimajia.slider.library.Transformers.FlipPageViewTransformer;
-import com.daimajia.slider.library.Transformers.ForegroundToBackgroundTransformer;
-import com.daimajia.slider.library.Transformers.RotateDownTransformer;
-import com.daimajia.slider.library.Transformers.RotateUpTransformer;
-import com.daimajia.slider.library.Transformers.StackTransformer;
-import com.daimajia.slider.library.Transformers.TabletTransformer;
-import com.daimajia.slider.library.Transformers.ZoomInTransformer;
-import com.daimajia.slider.library.Transformers.ZoomOutSlideTransformer;
-import com.daimajia.slider.library.Transformers.ZoomOutTransformer;
-import com.daimajia.slider.library.Tricks.FixedSpeedScroller;
-import com.daimajia.slider.library.Tricks.InfinitePagerAdapter;
-import com.daimajia.slider.library.Tricks.InfiniteViewPager;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.daimajia.slider.library.animations.BaseAnimationInterface;
+import com.daimajia.slider.library.indicators.PagerIndicator;
+import com.daimajia.slider.library.slidertypes.BaseSliderView;
+import com.daimajia.slider.library.transformers.AccordionTransformer;
+import com.daimajia.slider.library.transformers.BackgroundToForegroundTransformer;
+import com.daimajia.slider.library.transformers.BaseTransformer;
+import com.daimajia.slider.library.transformers.CubeInTransformer;
+import com.daimajia.slider.library.transformers.DefaultTransformer;
+import com.daimajia.slider.library.transformers.DepthPageTransformer;
+import com.daimajia.slider.library.transformers.FadeTransformer;
+import com.daimajia.slider.library.transformers.FlipHorizontalTransformer;
+import com.daimajia.slider.library.transformers.FlipPageViewTransformer;
+import com.daimajia.slider.library.transformers.ForegroundToBackgroundTransformer;
+import com.daimajia.slider.library.transformers.RotateDownTransformer;
+import com.daimajia.slider.library.transformers.RotateUpTransformer;
+import com.daimajia.slider.library.transformers.StackTransformer;
+import com.daimajia.slider.library.transformers.TabletTransformer;
+import com.daimajia.slider.library.transformers.ZoomInTransformer;
+import com.daimajia.slider.library.transformers.ZoomOutSlideTransformer;
+import com.daimajia.slider.library.transformers.ZoomOutTransformer;
+import com.daimajia.slider.library.tricks.FixedSpeedScroller;
+import com.daimajia.slider.library.tricks.InfinitePagerAdapter;
+import com.daimajia.slider.library.tricks.InfiniteViewPager;
+import com.daimajia.slider.library.tricks.ViewPagerEx;
 
 import java.lang.reflect.Field;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * SliderLayout is compound layout. This is combined with {@link com.daimajia.slider.library.Indicators.PagerIndicator}
- * and {@link com.daimajia.slider.library.Tricks.ViewPagerEx} .
+ * SliderLayout is compound layout. This is combined with {@link com.daimajia.slider.library.indicators.PagerIndicator}
+ * and {@link com.daimajia.slider.library.tricks.ViewPagerEx} .
  *
  * There is some properties you can set in XML:
  *
@@ -98,37 +98,37 @@ public class SliderLayout extends RelativeLayout{
     private SliderAdapter mSliderAdapter;
 
     /**
-     * {@link com.daimajia.slider.library.Tricks.ViewPagerEx} indicator.
+     * {@link com.daimajia.slider.library.tricks.ViewPagerEx} indicator.
      */
     private PagerIndicator mIndicator;
 
 
     /**
-     * A timer and a TimerTask using to cycle the {@link com.daimajia.slider.library.Tricks.ViewPagerEx}.
+     * A timer and a TimerTask using to cycle the {@link com.daimajia.slider.library.tricks.ViewPagerEx}.
      */
     private Timer mCycleTimer;
     private TimerTask mCycleTask;
 
     /**
-     * For resuming the cycle, after user touch or click the {@link com.daimajia.slider.library.Tricks.ViewPagerEx}.
+     * For resuming the cycle, after user touch or click the {@link com.daimajia.slider.library.tricks.ViewPagerEx}.
      */
     private Timer mResumingTimer;
     private TimerTask mResumingTask;
 
     /**
-     * If {@link com.daimajia.slider.library.Tricks.ViewPagerEx} is Cycling
+     * If {@link com.daimajia.slider.library.tricks.ViewPagerEx} is Cycling
      */
     private boolean mCycling;
 
     /**
-     * Determine if auto recover after user touch the {@link com.daimajia.slider.library.Tricks.ViewPagerEx}
+     * Determine if auto recover after user touch the {@link com.daimajia.slider.library.tricks.ViewPagerEx}
      */
     private boolean mAutoRecover = true;
 
     private int mTransformerId;
 
     /**
-     * {@link com.daimajia.slider.library.Tricks.ViewPagerEx} transformer time span.
+     * {@link com.daimajia.slider.library.tricks.ViewPagerEx} transformer time span.
      */
     private int mTransformerSpan = 1100;
 
@@ -140,22 +140,29 @@ public class SliderLayout extends RelativeLayout{
     private long mSliderDuration = 4000;
 
     /**
-     * Visibility of {@link com.daimajia.slider.library.Indicators.PagerIndicator}
+     * Visibility of {@link com.daimajia.slider.library.indicators.PagerIndicator}
      */
     private PagerIndicator.IndicatorVisibility mIndicatorVisibility = PagerIndicator.IndicatorVisibility.Visible;
 
     /**
-     * {@link com.daimajia.slider.library.Tricks.ViewPagerEx} 's transformer
+     * {@link com.daimajia.slider.library.tricks.ViewPagerEx} 's transformer
      */
     private BaseTransformer mViewPagerTransformer;
 
     /**
-     * @see com.daimajia.slider.library.Animations.BaseAnimationInterface
+     * @see com.daimajia.slider.library.animations.BaseAnimationInterface
      */
     private BaseAnimationInterface mCustomAnimation;
+    private android.os.Handler mh = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            moveNextPosition(true);
+        }
+    };
 
     /**
-     * {@link com.daimajia.slider.library.Indicators.PagerIndicator} shape, rect or oval.
+     * {@link com.daimajia.slider.library.indicators.PagerIndicator} shape, rect or oval.
      */
 
     public SliderLayout(Context context) {
@@ -236,14 +243,6 @@ public class SliderLayout extends RelativeLayout{
     public <T extends BaseSliderView> void addSlider(T imageContent){
         mSliderAdapter.addSlider(imageContent);
     }
-
-    private android.os.Handler mh = new android.os.Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            moveNextPosition(true);
-        }
-    };
 
     public void startAutoCycle(){
         startAutoCycle(mSliderDuration, mSliderDuration, mAutoRecover);
@@ -389,41 +388,6 @@ public class SliderLayout extends RelativeLayout{
     }
 
     /**
-     * preset transformers and their names
-     */
-    public enum Transformer{
-        Default("Default"),
-        Accordion("Accordion"),
-        Background2Foreground("Background2Foreground"),
-        CubeIn("CubeIn"),
-        DepthPage("DepthPage"),
-        Fade("Fade"),
-        FlipHorizontal("FlipHorizontal"),
-        FlipPage("FlipPage"),
-        Foreground2Background("Foreground2Background"),
-        RotateDown("RotateDown"),
-        RotateUp("RotateUp"),
-        Stack("Stack"),
-        Tablet("Tablet"),
-        ZoomIn("ZoomIn"),
-        ZoomOutSlide("ZoomOutSlide"),
-        ZoomOut("ZoomOut");
-
-        private final String name;
-
-        private Transformer(String s){
-            name = s;
-        }
-        public String toString(){
-            return name;
-        }
-
-        public boolean equals(String other){
-            return (other == null)? false:name.equals(other);
-        }
-    };
-
-    /**
      * set a preset viewpager transformer by id.
      * @param transformerId
      */
@@ -435,6 +399,8 @@ public class SliderLayout extends RelativeLayout{
             }
         }
     }
+
+    ;
 
     /**
      * set preset PagerTransformer via the name of transforemer.
@@ -451,8 +417,8 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * Inject your custom animation into PageTransformer, you can know more details in
-     * {@link com.daimajia.slider.library.Animations.BaseAnimationInterface},
-     * and you can see a example in {@link com.daimajia.slider.library.Animations.DescriptionAnimation}
+     * {@link com.daimajia.slider.library.animations.BaseAnimationInterface},
+     * and you can see a example in {@link com.daimajia.slider.library.animations.DescriptionAnimation}
      * @param animation
      */
     public void setCustomAnimation(BaseAnimationInterface animation){
@@ -525,7 +491,13 @@ public class SliderLayout extends RelativeLayout{
         setPagerTransformer(true,t);
     }
 
+    public PagerIndicator.IndicatorVisibility getIndicatorVisibility() {
+        if (mIndicator == null) {
+            return mIndicator.getIndicatorVisibility();
+        }
+        return PagerIndicator.IndicatorVisibility.Invisible;
 
+    }
 
     /**
      * Set the visibility of the indicators.
@@ -539,16 +511,8 @@ public class SliderLayout extends RelativeLayout{
         mIndicator.setIndicatorVisibility(visibility);
     }
 
-    public PagerIndicator.IndicatorVisibility getIndicatorVisibility(){
-        if(mIndicator == null){
-            return mIndicator.getIndicatorVisibility();
-        }
-        return PagerIndicator.IndicatorVisibility.Invisible;
-
-    }
-
     /**
-     * get the {@link com.daimajia.slider.library.Indicators.PagerIndicator} instance.
+     * get the {@link com.daimajia.slider.library.indicators.PagerIndicator} instance.
      * You can manipulate the properties of the indicator.
      * @return
      */
@@ -556,29 +520,6 @@ public class SliderLayout extends RelativeLayout{
         return mIndicator;
     }
 
-    public enum PresetIndicators{
-        Center_Bottom("Center_Bottom",R.id.default_center_bottom_indicator),
-        Right_Bottom("Right_Bottom",R.id.default_bottom_right_indicator),
-        Left_Bottom("Left_Bottom",R.id.default_bottom_left_indicator),
-        Center_Top("Center_Top",R.id.default_center_top_indicator),
-        Right_Top("Right_Top",R.id.default_center_top_right_indicator),
-        Left_Top("Left_Top",R.id.default_center_top_left_indicator);
-
-        private final String name;
-        private final int id;
-        private PresetIndicators(String name,int id){
-            this.name = name;
-            this.id = id;
-        }
-
-        public String toString(){
-            return name;
-        }
-
-        public int getResourceId(){
-            return id;
-        }
-    }
     public void setPresetIndicator(PresetIndicators presetIndicator){
         PagerIndicator pagerIndicator = (PagerIndicator)findViewById(presetIndicator.getResourceId());
         setCustomIndicator(pagerIndicator);
@@ -612,6 +553,10 @@ public class SliderLayout extends RelativeLayout{
 
         return mViewPager.getCurrentItem() % getRealAdapter().getCount();
 
+    }
+
+    public void setCurrentPosition(int position) {
+        setCurrentPosition(position, true);
     }
 
     /**
@@ -666,10 +611,6 @@ public class SliderLayout extends RelativeLayout{
         mViewPager.setCurrentItem(n, smooth);
     }
 
-    public void setCurrentPosition(int position) {
-        setCurrentPosition(position, true);
-    }
-
     /**
      * move to prev slide.
      */
@@ -698,5 +639,66 @@ public class SliderLayout extends RelativeLayout{
 
     public void moveNextPosition() {
         moveNextPosition(true);
+    }
+
+    /**
+     * preset transformers and their names
+     */
+    public enum Transformer {
+        Default("Default"),
+        Accordion("Accordion"),
+        Background2Foreground("Background2Foreground"),
+        CubeIn("CubeIn"),
+        DepthPage("DepthPage"),
+        Fade("Fade"),
+        FlipHorizontal("FlipHorizontal"),
+        FlipPage("FlipPage"),
+        Foreground2Background("Foreground2Background"),
+        RotateDown("RotateDown"),
+        RotateUp("RotateUp"),
+        Stack("Stack"),
+        Tablet("Tablet"),
+        ZoomIn("ZoomIn"),
+        ZoomOutSlide("ZoomOutSlide"),
+        ZoomOut("ZoomOut");
+
+        private final String name;
+
+        private Transformer(String s) {
+            name = s;
+        }
+
+        public String toString() {
+            return name;
+        }
+
+        public boolean equals(String other) {
+            return (other == null) ? false : name.equals(other);
+        }
+    }
+
+    public enum PresetIndicators {
+        Center_Bottom("Center_Bottom", R.id.default_center_bottom_indicator),
+        Right_Bottom("Right_Bottom", R.id.default_bottom_right_indicator),
+        Left_Bottom("Left_Bottom", R.id.default_bottom_left_indicator),
+        Center_Top("Center_Top", R.id.default_center_top_indicator),
+        Right_Top("Right_Top", R.id.default_center_top_right_indicator),
+        Left_Top("Left_Top", R.id.default_center_top_left_indicator);
+
+        private final String name;
+        private final int id;
+
+        private PresetIndicators(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
+
+        public String toString() {
+            return name;
+        }
+
+        public int getResourceId() {
+            return id;
+        }
     }
 }

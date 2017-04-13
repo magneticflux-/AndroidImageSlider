@@ -43,48 +43,46 @@ import java.util.TimerTask;
 /**
  * SliderLayout is compound layout. This is combined with {@link com.daimajia.slider.library.indicators.PagerIndicator}
  * and {@link com.daimajia.slider.library.tricks.ViewPagerEx} .
- *
+ * <p>
  * There is some properties you can set in XML:
- *
+ * <p>
  * indicator_visibility
- *      visible
- *      invisible
- *
+ * visible
+ * invisible
+ * <p>
  * indicator_shape
- *      oval
- *      rect
- *
+ * oval
+ * rect
+ * <p>
  * indicator_selected_color
- *
+ * <p>
  * indicator_unselected_color
- *
+ * <p>
  * indicator_selected_drawable
- *
+ * <p>
  * indicator_unselected_drawable
- *
+ * <p>
  * pager_animation
- *      Default
- *      Accordion
- *      Background2Foreground
- *      CubeIn
- *      DepthPage
- *      Fade
- *      FlipHorizontal
- *      FlipPage
- *      Foreground2Background
- *      RotateDown
- *      RotateUp
- *      Stack
- *      Tablet
- *      ZoomIn
- *      ZoomOutSlide
- *      ZoomOut
- *
+ * Default
+ * Accordion
+ * Background2Foreground
+ * CubeIn
+ * DepthPage
+ * Fade
+ * FlipHorizontal
+ * FlipPage
+ * Foreground2Background
+ * RotateDown
+ * RotateUp
+ * Stack
+ * Tablet
+ * ZoomIn
+ * ZoomOutSlide
+ * ZoomOut
+ * <p>
  * pager_animation_span
- *
- *
  */
-public class SliderLayout extends RelativeLayout{
+public class SliderLayout extends RelativeLayout {
 
     private Context mContext;
     /**
@@ -166,11 +164,11 @@ public class SliderLayout extends RelativeLayout{
      */
 
     public SliderLayout(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public SliderLayout(Context context, AttributeSet attrs) {
-        this(context,attrs,R.attr.SliderStyle);
+        this(context, attrs, R.attr.SliderStyle);
     }
 
     public SliderLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -178,15 +176,15 @@ public class SliderLayout extends RelativeLayout{
         mContext = context;
         LayoutInflater.from(context).inflate(R.layout.slider_layout, this, true);
 
-        final TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs,R.styleable.SliderLayout,
-                defStyle,0);
+        final TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SliderLayout,
+                defStyle, 0);
 
         mTransformerSpan = attributes.getInteger(R.styleable.SliderLayout_pager_animation_span, 1100);
         mTransformerId = attributes.getInt(R.styleable.SliderLayout_pager_animation, Transformer.Default.ordinal());
-        mAutoCycle = attributes.getBoolean(R.styleable.SliderLayout_auto_cycle,true);
-        int visibility = attributes.getInt(R.styleable.SliderLayout_indicator_visibility,0);
-        for(PagerIndicator.IndicatorVisibility v: PagerIndicator.IndicatorVisibility.values()){
-            if(v.ordinal() == visibility){
+        mAutoCycle = attributes.getBoolean(R.styleable.SliderLayout_auto_cycle, true);
+        int visibility = attributes.getInt(R.styleable.SliderLayout_indicator_visibility, 0);
+        for (PagerIndicator.IndicatorVisibility v : PagerIndicator.IndicatorVisibility.values()) {
+            if (v.ordinal() == visibility) {
                 mIndicatorVisibility = v;
                 break;
             }
@@ -194,7 +192,7 @@ public class SliderLayout extends RelativeLayout{
         mSliderAdapter = new SliderAdapter(mContext);
         PagerAdapter wrappedAdapter = new InfinitePagerAdapter(mSliderAdapter);
 
-        mViewPager = (InfiniteViewPager)findViewById(R.id.daimajia_slider_viewpager);
+        mViewPager = (InfiniteViewPager) findViewById(R.id.daimajia_slider_viewpager);
         mViewPager.setAdapter(wrappedAdapter);
 
         mViewPager.setOnTouchListener(new OnTouchListener() {
@@ -202,7 +200,7 @@ public class SliderLayout extends RelativeLayout{
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
-                     case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_UP:
                         recoverCycle();
                         break;
                 }
@@ -213,15 +211,15 @@ public class SliderLayout extends RelativeLayout{
         attributes.recycle();
         setPresetIndicator(PresetIndicators.Center_Bottom);
         setPresetTransformer(mTransformerId);
-        setSliderTransformDuration(mTransformerSpan,null);
+        setSliderTransformDuration(mTransformerSpan, null);
         setIndicatorVisibility(mIndicatorVisibility);
-        if(mAutoCycle){
+        if (mAutoCycle) {
             startAutoCycle();
         }
     }
 
-    public void addOnPageChangeListener(ViewPagerEx.OnPageChangeListener onPageChangeListener){
-        if(onPageChangeListener != null){
+    public void addOnPageChangeListener(ViewPagerEx.OnPageChangeListener onPageChangeListener) {
+        if (onPageChangeListener != null) {
             mViewPager.addOnPageChangeListener(onPageChangeListener);
         }
     }
@@ -230,8 +228,8 @@ public class SliderLayout extends RelativeLayout{
         mViewPager.removeOnPageChangeListener(onPageChangeListener);
     }
 
-    public void setCustomIndicator(PagerIndicator indicator){
-        if(mIndicator != null){
+    public void setCustomIndicator(PagerIndicator indicator) {
+        if (mIndicator != null) {
             mIndicator.destroySelf();
         }
         mIndicator = indicator;
@@ -240,25 +238,26 @@ public class SliderLayout extends RelativeLayout{
         mIndicator.redraw();
     }
 
-    public <T extends BaseSliderView> void addSlider(T imageContent){
+    public <T extends BaseSliderView> void addSlider(T imageContent) {
         mSliderAdapter.addSlider(imageContent);
     }
 
-    public void startAutoCycle(){
+    public void startAutoCycle() {
         startAutoCycle(mSliderDuration, mSliderDuration, mAutoRecover);
     }
 
     /**
      * start auto cycle.
-     * @param delay delay time
-     * @param duration animation duration time.
+     *
+     * @param delay       delay time
+     * @param duration    animation duration time.
      * @param autoRecover if recover after user touches the slider.
      */
-    public void startAutoCycle(long delay,long duration,boolean autoRecover){
-        if(mCycleTimer != null) mCycleTimer.cancel();
-        if(mCycleTask != null) mCycleTask.cancel();
-        if(mResumingTask != null) mResumingTask.cancel();
-        if(mResumingTimer != null) mResumingTimer.cancel();
+    public void startAutoCycle(long delay, long duration, boolean autoRecover) {
+        if (mCycleTimer != null) mCycleTimer.cancel();
+        if (mCycleTask != null) mCycleTask.cancel();
+        if (mResumingTask != null) mResumingTask.cancel();
+        if (mResumingTimer != null) mResumingTimer.cancel();
         mSliderDuration = duration;
         mCycleTimer = new Timer();
         mAutoRecover = autoRecover;
@@ -268,7 +267,7 @@ public class SliderLayout extends RelativeLayout{
                 mh.sendEmptyMessage(0);
             }
         };
-        mCycleTimer.schedule(mCycleTask,delay,mSliderDuration);
+        mCycleTimer.schedule(mCycleTask, delay, mSliderDuration);
         mCycling = true;
         mAutoCycle = true;
     }
@@ -276,13 +275,13 @@ public class SliderLayout extends RelativeLayout{
     /**
      * pause auto cycle.
      */
-    private void pauseAutoCycle(){
-        if(mCycling){
+    private void pauseAutoCycle() {
+        if (mCycling) {
             mCycleTimer.cancel();
             mCycleTask.cancel();
             mCycling = false;
-        }else{
-            if(mResumingTimer != null && mResumingTask != null){
+        } else {
+            if (mResumingTimer != null && mResumingTask != null) {
                 recoverCycle();
             }
         }
@@ -290,12 +289,13 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * set the duration between two slider changes. the duration value must >= 500
+     *
      * @param duration
      */
-    public void setDuration(long duration){
-        if(duration >= 500){
+    public void setDuration(long duration) {
+        if (duration >= 500) {
             mSliderDuration = duration;
-            if(mAutoCycle && mCycling){
+            if (mAutoCycle && mCycling) {
                 startAutoCycle();
             }
         }
@@ -304,17 +304,17 @@ public class SliderLayout extends RelativeLayout{
     /**
      * stop the auto circle
      */
-    public void stopAutoCycle(){
-        if(mCycleTask!=null){
+    public void stopAutoCycle() {
+        if (mCycleTask != null) {
             mCycleTask.cancel();
         }
-        if(mCycleTimer!= null){
+        if (mCycleTimer != null) {
             mCycleTimer.cancel();
         }
-        if(mResumingTimer!= null){
+        if (mResumingTimer != null) {
             mResumingTimer.cancel();
         }
-        if(mResumingTask!=null){
+        if (mResumingTask != null) {
             mResumingTask.cancel();
         }
         mAutoCycle = false;
@@ -324,13 +324,13 @@ public class SliderLayout extends RelativeLayout{
     /**
      * when paused cycle, this method can weak it up.
      */
-    private void recoverCycle(){
-        if(!mAutoRecover || !mAutoCycle){
+    private void recoverCycle() {
+        if (!mAutoRecover || !mAutoCycle) {
             return;
         }
 
-        if(!mCycling){
-            if(mResumingTask != null && mResumingTimer!= null){
+        if (!mCycling) {
+            if (mResumingTask != null && mResumingTimer != null) {
                 mResumingTimer.cancel();
                 mResumingTask.cancel();
             }
@@ -346,7 +346,6 @@ public class SliderLayout extends RelativeLayout{
     }
 
 
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
@@ -360,40 +359,42 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * set ViewPager transformer.
+     *
      * @param reverseDrawingOrder
      * @param transformer
      */
-    public void setPagerTransformer(boolean reverseDrawingOrder,BaseTransformer transformer){
+    public void setPagerTransformer(boolean reverseDrawingOrder, BaseTransformer transformer) {
         mViewPagerTransformer = transformer;
         mViewPagerTransformer.setCustomAnimationInterface(mCustomAnimation);
-        mViewPager.setPageTransformer(reverseDrawingOrder,mViewPagerTransformer);
+        mViewPager.setPageTransformer(reverseDrawingOrder, mViewPagerTransformer);
     }
-
 
 
     /**
      * set the duration between two slider changes.
+     *
      * @param period
      * @param interpolator
      */
-    public void setSliderTransformDuration(int period,Interpolator interpolator){
-        try{
+    public void setSliderTransformDuration(int period, Interpolator interpolator) {
+        try {
             Field mScroller = ViewPagerEx.class.getDeclaredField("mScroller");
             mScroller.setAccessible(true);
-            FixedSpeedScroller scroller = new FixedSpeedScroller(mViewPager.getContext(),interpolator, period);
-            mScroller.set(mViewPager,scroller);
-        }catch (Exception e){
+            FixedSpeedScroller scroller = new FixedSpeedScroller(mViewPager.getContext(), interpolator, period);
+            mScroller.set(mViewPager, scroller);
+        } catch (Exception e) {
 
         }
     }
 
     /**
      * set a preset viewpager transformer by id.
+     *
      * @param transformerId
      */
-    public void setPresetTransformer(int transformerId){
-        for(Transformer t : Transformer.values()){
-            if(t.ordinal() == transformerId){
+    public void setPresetTransformer(int transformerId) {
+        for (Transformer t : Transformer.values()) {
+            if (t.ordinal() == transformerId) {
                 setPresetTransformer(t);
                 break;
             }
@@ -404,11 +405,12 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * set preset PagerTransformer via the name of transforemer.
+     *
      * @param transformerName
      */
-    public void setPresetTransformer(String transformerName){
-        for(Transformer t : Transformer.values()){
-            if(t.equals(transformerName)){
+    public void setPresetTransformer(String transformerName) {
+        for (Transformer t : Transformer.values()) {
+            if (t.equals(transformerName)) {
                 setPresetTransformer(t);
                 return;
             }
@@ -419,11 +421,12 @@ public class SliderLayout extends RelativeLayout{
      * Inject your custom animation into PageTransformer, you can know more details in
      * {@link com.daimajia.slider.library.animations.BaseAnimationInterface},
      * and you can see a example in {@link com.daimajia.slider.library.animations.DescriptionAnimation}
+     *
      * @param animation
      */
-    public void setCustomAnimation(BaseAnimationInterface animation){
+    public void setCustomAnimation(BaseAnimationInterface animation) {
         mCustomAnimation = animation;
-        if(mViewPagerTransformer != null){
+        if (mViewPagerTransformer != null) {
             mViewPagerTransformer.setCustomAnimationInterface(mCustomAnimation);
         }
     }
@@ -433,12 +436,12 @@ public class SliderLayout extends RelativeLayout{
      *
      * @param ts
      */
-    public void setPresetTransformer(Transformer ts){
+    public void setPresetTransformer(Transformer ts) {
         //
         // special thanks to https://github.com/ToxicBakery/ViewPagerTransforms
         //
         BaseTransformer t = null;
-        switch (ts){
+        switch (ts) {
             case Default:
                 t = new DefaultTransformer();
                 break;
@@ -488,7 +491,7 @@ public class SliderLayout extends RelativeLayout{
                 t = new ZoomOutTransformer();
                 break;
         }
-        setPagerTransformer(true,t);
+        setPagerTransformer(true, t);
     }
 
     public PagerIndicator.IndicatorVisibility getIndicatorVisibility() {
@@ -501,10 +504,11 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * Set the visibility of the indicators.
+     *
      * @param visibility
      */
-    public void setIndicatorVisibility(PagerIndicator.IndicatorVisibility visibility){
-        if(mIndicator == null){
+    public void setIndicatorVisibility(PagerIndicator.IndicatorVisibility visibility) {
+        if (mIndicator == null) {
             return;
         }
 
@@ -514,41 +518,43 @@ public class SliderLayout extends RelativeLayout{
     /**
      * get the {@link com.daimajia.slider.library.indicators.PagerIndicator} instance.
      * You can manipulate the properties of the indicator.
+     *
      * @return
      */
-    public PagerIndicator getPagerIndicator(){
+    public PagerIndicator getPagerIndicator() {
         return mIndicator;
     }
 
-    public void setPresetIndicator(PresetIndicators presetIndicator){
-        PagerIndicator pagerIndicator = (PagerIndicator)findViewById(presetIndicator.getResourceId());
+    public void setPresetIndicator(PresetIndicators presetIndicator) {
+        PagerIndicator pagerIndicator = (PagerIndicator) findViewById(presetIndicator.getResourceId());
         setCustomIndicator(pagerIndicator);
     }
 
-    private InfinitePagerAdapter getWrapperAdapter(){
+    private InfinitePagerAdapter getWrapperAdapter() {
         PagerAdapter adapter = mViewPager.getAdapter();
-        if(adapter!=null){
-            return (InfinitePagerAdapter)adapter;
-        }else{
+        if (adapter != null) {
+            return (InfinitePagerAdapter) adapter;
+        } else {
             return null;
         }
     }
 
-    private SliderAdapter getRealAdapter(){
+    private SliderAdapter getRealAdapter() {
         PagerAdapter adapter = mViewPager.getAdapter();
-        if(adapter!=null){
-            return ((InfinitePagerAdapter)adapter).getRealAdapter();
+        if (adapter != null) {
+            return ((InfinitePagerAdapter) adapter).getRealAdapter();
         }
         return null;
     }
 
     /**
      * get the current item position
+     *
      * @return
      */
-    public int getCurrentPosition(){
+    public int getCurrentPosition() {
 
-        if(getRealAdapter() == null)
+        if (getRealAdapter() == null)
             throw new IllegalStateException("You did not set a slider adapter");
 
         return mViewPager.getCurrentItem() % getRealAdapter().getCount();
@@ -561,49 +567,51 @@ public class SliderLayout extends RelativeLayout{
 
     /**
      * get current slider.
+     *
      * @return
      */
-    public BaseSliderView getCurrentSlider(){
+    public BaseSliderView getCurrentSlider() {
 
-        if(getRealAdapter() == null)
+        if (getRealAdapter() == null)
             throw new IllegalStateException("You did not set a slider adapter");
 
         int count = getRealAdapter().getCount();
         int realCount = mViewPager.getCurrentItem() % count;
-        return  getRealAdapter().getSliderView(realCount);
+        return getRealAdapter().getSliderView(realCount);
     }
 
     /**
      * remove  the slider at the position. Notice: It's a not perfect method, a very small bug still exists.
      */
-    public void removeSliderAt(int position){
-        if(getRealAdapter()!=null){
+    public void removeSliderAt(int position) {
+        if (getRealAdapter() != null) {
             getRealAdapter().removeSliderAt(position);
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem(),false);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem(), false);
         }
     }
 
     /**
      * remove all the sliders. Notice: It's a not perfect method, a very small bug still exists.
      */
-    public void removeAllSliders(){
-        if(getRealAdapter()!=null){
+    public void removeAllSliders() {
+        if (getRealAdapter() != null) {
             int count = getRealAdapter().getCount();
             getRealAdapter().removeAllSliders();
             //a small bug, but fixed by this trick.
             //bug: when remove adapter's all the sliders.some caching slider still alive.
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() +  count,false);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + count, false);
         }
     }
 
     /**
-     *set current slider
+     * set current slider
+     *
      * @param position
      */
     public void setCurrentPosition(int position, boolean smooth) {
         if (getRealAdapter() == null)
             throw new IllegalStateException("You did not set a slider adapter");
-        if(position >= getRealAdapter().getCount()){
+        if (position >= getRealAdapter().getCount()) {
             throw new IllegalStateException("Item position is not exist");
         }
         int p = mViewPager.getCurrentItem() % getRealAdapter().getCount();
@@ -622,7 +630,7 @@ public class SliderLayout extends RelativeLayout{
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, smooth);
     }
 
-    public void movePrevPosition(){
+    public void movePrevPosition() {
         movePrevPosition(true);
     }
 
